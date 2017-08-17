@@ -45,11 +45,11 @@ system("awk '{\$3+=1}1' outbed.bed > outbed2.bed\n") == 0  or die "system bed fi
 system("sed -r 's/\\s+/\t/g' outbed2.bed > outbed3.bed\n") == 0  or die "system bed file creation step6 failed: $?";
 
    
-##Get coverage for each snp position using bedtools for each vcf
-system("for f in *.bam; do bedtools coverage -abam \$f -b outbed3.bed > \$f.bed ; done") == 0  or die "bedtools coverage1: $?";
+##Get coverage for each snp position using bedtools for each vcf and cut the coverage column from each bam file
+system("for f in *.bam; do bedtools coverage -abam \$f -b outbed3.bed | cut -f4 - > \$f.2.bed ; done") == 0  or die "bedtools coverage1: $?";
 
-##cut the coverage column from each bam file
-system("for f in *.bam.bed; do cut -f4 \$f > \$f.2.bed ; done") == 0  or die "bedtools coverage2: $?";
+##redundant
+#system("for f in *.bam.bed; do cut -f4 \$f > \$f.2.bed ; done") == 0  or die "bedtools coverage2: $?";
 
 ##Get all coverage column files for vcfs from previous step
 my @bed;
